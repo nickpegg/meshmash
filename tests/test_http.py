@@ -56,7 +56,8 @@ Endpoint = 1.2.3.4:51280
     assert resp.data == expected_config
 
 
-def test_no_auth(client: "FlaskClient[Response]") -> None:
+@mock.patch("meshmash.http.Config.from_yaml", return_value=mock_config)
+def test_no_auth(config: Config, client: "FlaskClient[Response]") -> None:
     """
     All the URLs should require authentication
     """
