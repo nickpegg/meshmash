@@ -1,3 +1,4 @@
+import os
 from typing import Generator, Iterator
 from unittest import mock
 
@@ -8,7 +9,9 @@ from flask.wrappers import Response
 from meshmash.http import app
 from meshmash.manager import Config
 
-mock_config = Config(psk="test_psk", subnet="10.1.2.0/24", state_path="state.json",)
+mock_config = Config(
+    psk="test_psk", subnet="10.1.2.0/24", state_path="test_state.json",
+)
 
 
 @pytest.fixture
@@ -16,6 +19,10 @@ def client() -> "Iterator[FlaskClient[Response]]":
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
+
+    for statefile in ("test_state.json", "test_state.json.bkup"):
+        if os.path.exists(statefile):
+            os.remove(statefile)
 
 
 @mock.patch("meshmash.http.Config.from_env", return_value=mock_config)
