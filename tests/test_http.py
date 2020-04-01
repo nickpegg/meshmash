@@ -18,7 +18,7 @@ def client() -> "Iterator[FlaskClient[Response]]":
         yield client
 
 
-@mock.patch("meshmash.http.Config.from_yaml", return_value=mock_config)
+@mock.patch("meshmash.http.Config.from_env", return_value=mock_config)
 def test_workflow(config: Config, client: "FlaskClient[Response]") -> None:
     """
     Test the registration workflow
@@ -56,7 +56,7 @@ Endpoint = 1.2.3.4:51280
     assert resp.data == expected_config
 
 
-@mock.patch("meshmash.http.Config.from_yaml", return_value=mock_config)
+@mock.patch("meshmash.http.Config.from_env", return_value=mock_config)
 def test_no_auth(config: Config, client: "FlaskClient[Response]") -> None:
     """
     All the URLs should require authentication
