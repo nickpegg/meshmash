@@ -79,7 +79,7 @@ def get_manager() -> Manager:
     # TODO: get YAML path from config var
     if "manager" not in g:
         app.logger.info("creating Manager")
-        g.manager = Manager(Config.from_yaml("meshmash.yml"))
+        g.manager = Manager(Config.from_env())
         g.manager.load_state()
     assert isinstance(g.manager, Manager)
     return g.manager
