@@ -4,6 +4,9 @@ This is a simple web API which keeps track of nodes in a Wireguard mesh. Nodes
 can register themselves and retreive the Wireguard config with all of the nodes
 as peers.
 
+Warning: This is for my personal use and hasn't been battle-tested in a
+production enviornment.
+
 ## Flow
 1. An operator, with a pre-shared key, makes a request to `/allocation` which
    returns a new allocation token.
@@ -20,3 +23,8 @@ as peers.
 6. The configuration management system, using the Wireguard public key as auth,
    makes a request to `/config` to get the config with the `[Peer]` config
    sections and stores that on disk.
+
+Yes, authenticating to `/config` with a public key like this is pretty weak.
+This is really only to stop drive-by people from reading your peer config and
+learning your network topology. If you have access to one of these public keys,
+you're likely already trusted to be on the network.
