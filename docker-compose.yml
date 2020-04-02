@@ -1,0 +1,17 @@
+# docker-compose file for development
+
+version: "3.7"
+
+services:
+  web:
+    build: .
+    environment:
+      MESHMASH_PSK: "test_psk"
+      MESHMASH_SUBNET: "10.254.0.0/24"
+    volumes:
+      - ".test_data:/meshmash"
+      # Bind current dir in container so changes on local disk show up in there
+      # without having to rebuild the image
+      - ".:/app"
+    ports:
+      - "8000:8000"

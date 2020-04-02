@@ -100,6 +100,7 @@ class Manager:
         with MANAGER_LOCK:
             if do_backup:
                 shutil.copyfile(self.config.state_path, bkup_file)
+                os.chmod(bkup_file, 0o600)
             try:
                 state = {
                     "alloc_tokens": [],
@@ -112,6 +113,7 @@ class Manager:
 
                 with open(self.config.state_path, "w") as f:
                     f.write(json.dumps(state))
+                os.chmod(self.config.state_path, 0o600)
             except:
                 # Restore the backup and re-raise the exception
                 if do_backup:

@@ -13,6 +13,7 @@ isort = "*"
 [packages]
 flask = "*"
 pyyaml = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
