@@ -1,8 +1,8 @@
 # Meshmash - A Wireguard mesh network manager
 
-This is a simple web API which keeps track of nodes in a Wireguard mesh. Nodes
-can register themselves and retreive the Wireguard config with all of the nodes
-as peers.
+This is a simple web service which keeps track of nodes in a Wireguard mesh.
+Nodes can register themselves and retreive the Wireguard config with all of the
+nodes as peers.
 
 Warning: This is for my personal use and hasn't been battle-tested in a
 production enviornment.
@@ -24,7 +24,13 @@ production enviornment.
    makes a request to `/config` to get the config with the `[Peer]` config
    sections and stores that on disk.
 
-Yes, authenticating to `/config` with a public key like this is pretty weak.
-This is really only to stop drive-by people from reading your peer config and
+## Caveats
+Authenticating to `/config` with a public key like this is pretty weak.  This
+is really only to stop drive-by people from reading your peer config and
 learning your network topology. If you have access to one of these public keys,
 you're likely already trusted to be on the network.
+
+The persistence for Meshmash is currently a JSON file on disk, which makes it
+hard to run it in a highly-available way. When the complexity is warranted,
+meaning I don't want Chef runs to fail if Meshmash is down, I'll add
+persistence to some data store (database? Consul? etcd?).
