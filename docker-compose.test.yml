@@ -1,0 +1,20 @@
+# docker-compose file for development
+
+version: "3.7"
+
+services:
+  sut:
+    build: .
+    command: >
+      bash -c "
+      pipenv install --system -d
+      && pipenv run mypy .
+      && pipenv run pytest
+      "
+    environment:
+      MESHMASH_PSK: "test_psk"
+      MESHMASH_SUBNET: "10.254.0.0/24"
+    volumes:
+      - ".test_data:/meshmash"
+    ports:
+      - "8000:8000"
