@@ -76,7 +76,6 @@ def header_token(request: Request) -> Optional[str]:
 
 
 def get_manager() -> Manager:
-    # TODO: get YAML path from config var
     if "manager" not in g:
         app.logger.info("creating Manager")
         g.manager = Manager(Config.from_env())
