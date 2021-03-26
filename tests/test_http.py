@@ -33,7 +33,9 @@ def test_workflow(config: Config, client: "FlaskClient[Response]") -> None:
     resp = client.get("/allocation", headers={"Authorization": "Bearer test_psk"})
     assert resp.status_code == 200
 
-    alloc_token = resp.get_json()["alloc_token"]
+    blob = resp.get_json()
+    assert isinstance(blob, dict)
+    alloc_token = blob["alloc_token"]
     node = {
         "hostname": "test_host",
         "public_key": "test_host_pubkey",
@@ -43,7 +45,10 @@ def test_workflow(config: Config, client: "FlaskClient[Response]") -> None:
         "/register", headers={"Authorization": f"Bearer {alloc_token}"}, data=node
     )
     assert resp.status_code == 200
-    assert resp.get_json()["private_ip"] == "10.1.2.2"
+
+    blob = resp.get_json()
+    assert isinstance(blob, dict)
+    assert blob["private_ip"] == "10.1.2.2"
 
     resp = client.get(
         "/config", headers={"Authorization": f"Bearer {node['public_key']}"}
