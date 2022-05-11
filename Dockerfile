@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -9,10 +9,11 @@ VOLUME /meshmash
 
 ENV MESHMASH_STATE_PATH /meshmash/state.json
 
-RUN pip install --no-cache-dir pipenv
-COPY Pipfile Pipfile.lock ./
-RUN pipenv install --system
+RUN pip install --no-cache-dir poetry
+
+COPY pyproject.toml poetry.lock ./
+RUN poetry install --no-dev
 
 COPY . .
 
-CMD gunicorn meshmash.http:app -w 4 --capture-output --access-logfile - --log-file - -b 0.0.0.0:8000
+CMD poetry run gunicorn meshmash.http:app -w 4 --capture-output --access-logfile - --log-file - -b 0.0.0.0:8000

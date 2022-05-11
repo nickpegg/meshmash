@@ -10,12 +10,14 @@ from meshmash.http import app
 from meshmash.manager import Config
 
 mock_config = Config(
-    psk="test_psk", subnet="10.1.2.0/24", state_path="test_state.json",
+    psk="test_psk",
+    subnet="10.1.2.0/24",
+    state_path="test_state.json",
 )
 
 
 @pytest.fixture
-def client() -> "Iterator[FlaskClient[Response]]":
+def client() -> "Iterator[FlaskClient]":
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
@@ -26,7 +28,7 @@ def client() -> "Iterator[FlaskClient[Response]]":
 
 
 @mock.patch("meshmash.http.Config.from_env", return_value=mock_config)
-def test_workflow(config: Config, client: "FlaskClient[Response]") -> None:
+def test_workflow(config: Config, client: "FlaskClient") -> None:
     """
     Test the registration workflow
     """
@@ -69,7 +71,7 @@ Endpoint = 1.2.3.4:51280
 
 
 @mock.patch("meshmash.http.Config.from_env", return_value=mock_config)
-def test_no_auth(config: Config, client: "FlaskClient[Response]") -> None:
+def test_no_auth(config: Config, client: "FlaskClient") -> None:
     """
     All the URLs should require authentication
     """

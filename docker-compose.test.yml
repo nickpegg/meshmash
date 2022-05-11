@@ -7,9 +7,9 @@ services:
     build: .
     command: >
       bash -c "
-      pipenv install --system -d
-      && pipenv run mypy .
-      && pipenv run pytest
+      poetry install
+      && poetry run mypy .
+      && poetry run pytest
       "
     environment:
       MESHMASH_PSK: "test_psk"
