@@ -25,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install docker-compose
+        run: sudo apt install -y docker-compose
+
       - name: Run tests
         run: make test-docker
 

@@ -12,8 +12,9 @@ ENV MESHMASH_STATE_PATH /meshmash/state.json
 RUN pip install --no-cache-dir poetry
 
 COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-dev
+RUN poetry install --without=dev --no-root
 
 COPY . .
+RUN poetry install --without=dev
 
 CMD poetry run gunicorn meshmash.http:app -w 4 --capture-output --access-logfile - --log-file - -b 0.0.0.0:8000
